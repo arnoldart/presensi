@@ -17,9 +17,3 @@ class User(db.Model):
 
     def check_password(self, password):
         return bcrypt.check_password_hash(self.password, password)
-
-class Transaction(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    status = db.Column(db.String(80), nullable=False)
-    type = db.Column(db.String(80), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

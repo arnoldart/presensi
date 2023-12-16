@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 from Models.UserModel import db
 # IMPORT CONTROLLER
 from Controllers.UserController import main_bp
-from Controllers.TransactionController import transaction_bp
 
 app = Flask(__name__)
 CORS(app)
@@ -23,7 +22,6 @@ migrate = Migrate(app, db)
 
 # Registrasi blueprint
 app.register_blueprint(main_bp)
-app.register_blueprint(transaction_bp)
 
 if __name__ == '__main__':
     with app.app_context():

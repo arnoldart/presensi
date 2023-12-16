@@ -1,7 +1,7 @@
 from flask_bcrypt import Bcrypt
 from flask import Blueprint, jsonify, request
 from sqlalchemy import desc
-from Models.UserModel import Transaction, User, db
+from Models.UserModel import User, db
 
 main_bp = Blueprint('main', __name__)
 bcrypt = Bcrypt()
