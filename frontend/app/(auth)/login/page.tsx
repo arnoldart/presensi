@@ -1,6 +1,57 @@
+"use client"
+import { checkAuth } from "@/utils/CheckAuth";
 import Link from "next/link"
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from 'react'
+import Cookies from 'js-cookie';
 
 const Login = () => {
+  const [nim, setNim] = useState('');
+  const [password, setPassword] = useState('');
+  const router = useRouter()
+
+  useEffect(() => {
+    // Cek apakah pengguna telah login
+    if (!checkAuth()) {
+      // Jika tidak, redirect ke halaman login
+      router.push('/login');
+    }else {
+      router.push('/')
+    }
+  }, []);
+
+  const handlerLogin = async () => {
+    try {
+      const response = await fetch(`https://congenial-winner-q4479vw4jv9hqx-5000.app.github.dev/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nim,
+          password,
+        }),
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        const token = responseData.token;
+        const id = responseData.id;
+
+        Cookies.set('token', token, { expires: 1, path: '/' });
+        Cookies.set('id', id, { expires: 1, path: '/' });
+
+        router.push('/')
+
+      } else {
+        // Registrasi gagal, Anda dapat menangani kesalahan di sini
+        console.error('Login gagal!');
+      }
+    } catch (e) {
+      console.error('Error Register', e)
+    }
+  }
+
   return (
     <div className="flex justify-center h-screen items-center flex-col">
       <div className="border border-gray-200 rounded-md p-5">
@@ -9,13 +60,13 @@ const Login = () => {
           <div className="flex flex-col">
             <label className="text-sm font-semibold">NIM</label>
             <div className="p-1 border border-gray-200 rounded">
-              <input className="outline-none" type="text" placeholder="Masukkan Username" />
+              <input onChange={(e) => setNim(e.target.value)} className="outline-none" type="text" placeholder="Masukkan Username" />
             </div>
           </div>
           <div className="flex flex-col">
             <label className="text-sm font-semibold">Password</label>
             <div className="p-1 border border-gray-200 rounded">
-              <input className="outline-none" type="text" placeholder="Masukkan Password" />
+              <input onChange={(e) => setPassword(e.target.value)} className="outline-none" type="text" placeholder="Masukkan Password" />
             </div>
           </div>
         </form>
@@ -24,7 +75,7 @@ const Login = () => {
             <span className="font-bold text-black"> Register</span>
           </Link>
         </p>
-        <div className="text-center bg-black text-white py-1 rounded mt-5 cursor-pointer">
+        <div onClick={handlerLogin} className="text-center bg-black text-white py-1 rounded mt-5 cursor-pointer">
           Login
         </div>
       </div>

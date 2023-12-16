@@ -9,18 +9,22 @@ bcrypt = Bcrypt()
 @main_bp.route('/add_user', methods=['POST'])
 def add_user():
     data = request.json  # Mengambil data JSON dari body permintaan
+
+    print(data)
     
     # Memeriksa keberadaan username dan password dalam data JSON
     if 'nim' not in data or not data['nim'] or \
-       'password' not in data or not data['password']:
+       'password' not in data or not data['password'] or \
+       'username' not in data or not data['username']:
         return jsonify({'error': 'Username, and password cannot be empty'}), 400
     
     nim = data['nim']
+    nama = data['username']
     password = data['password']
     
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
     
-    new_user = User(nim=username, password=hashed_password)
+    new_user = User(nim=nim, password=hashed_password, nama=nama)
     db.session.add(new_user)
 
     try:
@@ -39,17 +43,14 @@ def add_user():
 def login():
     data = request.json
 
-    if 'username' not in data or 'password' not in data:
+    if 'nim' not in data or 'password' not in data:
         return jsonify({'error': 'Missing username or password'}), 400
 
-    user = User.query.filter_by(username=data['username']).first()
+    user = User.query.filter_by(nim=data['nim']).first()
 
     if user and user.check_password(data['password']):
         # Menambahkan pemeriksaan peran di sini
-        if user.role == 'admin':
-            return jsonify({'message': 'Admin login successful', 'token': "token admin", 'role': user.role, 'id': user.id}), 200
-        else:
-            return jsonify({'message': 'User login successful', 'token': "token user", 'role': user.role, 'id': user.id}), 200
+        return jsonify({'message': 'User login successful', 'token': "token user", 'id': user.id}), 200
     else:
         return jsonify({'error': 'Invalid username or password'}), 401
 
@@ -75,11 +76,11 @@ def login():
 @main_bp.route('/get_users', methods=['GET'])
 def get_users():
     try:
-        search_username = request.args.get('username', default=None, type=str)
+        search_nim = request.args.get('nim', default=None, type=str)
 
-        # If search_username is provided, filter by username
-        if search_username:
-            users = User.query.filter(User.username.ilike(f'%{search_username}%')).all()
+        # If search_nim is provided, filter by nim
+        if search_nim:
+            users = User.query.filter(User.nim.ilike(f'%{search_nim}%')).all()
         else:
             # Fetch users in descending order based on their id
             users = User.query.order_by(desc(User.id)).all()
@@ -87,20 +88,42 @@ def get_users():
         user_data = []
 
         for user in users:
-            user_transactions = Transaction.query.filter_by(user_id=user.id).all()
-            transactions = [{'status': transaction.status, 'type': transaction.type} for transaction in user_transactions]
-
             user_data.append({
                 'id': user.id,
-                'username': user.username,
-                'email': user.email,
-                'transactions': transactions,
-                'role': user.role
+                'nim': user.nim,
+                'name': user.nama
             })
 
         return jsonify(user_data)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    # try:
+    #     search_username = request.args.get('username', default=None, type=str)
+
+    #     # If search_username is provided, filter by username
+    #     if search_username:
+    #         users = User.query.filter(User.username.ilike(f'%{search_username}%')).all()
+    #     else:
+    #         # Fetch users in descending order based on their id
+    #         users = User.query.order_by(desc(User.id)).all()
+
+    #     user_data = []
+
+    #     for user in users:
+    #         user_transactions = Transaction.query.filter_by(user_id=user.id).all()
+    #         transactions = [{'status': transaction.status, 'type': transaction.type} for transaction in user_transactions]
+
+    #         user_data.append({
+    #             'id': user.id,
+    #             'nim': user.nim,
+    #             'email': user.email,
+    #             'transactions': transactions,
+    #             'role': user.role
+    #         })
+
+    #     return jsonify(user_data)
+    # except Exception as e:
+    #     return jsonify({'error': str(e)}), 500
 
 @main_bp.route('/delete_user/<int:user_id>', methods=['DELETE'])
 def delete_user(user_id):

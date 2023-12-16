@@ -6,7 +6,8 @@ bcrypt = Bcrypt()
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    nim = db.Column(db.Integer, unique=True, nullable=False)
+    nim = db.Column(db.String(80), unique=True, nullable=False)
+    nama = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     presensi_kelas = db.relationship('Presensi', backref='user', lazy=True)
     

@@ -5,19 +5,23 @@ import { useState } from "react";
 
 const Register = () => {
   const [nim, setNim] = useState('');
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('');
 
   const router = useRouter()
 
+  console.log(process.env.API)
+
   const handlerRegister = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:5000/add_user', {
+      const response = await fetch(`https://congenial-winner-q4479vw4jv9hqx-5000.app.github.dev//add_user`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           nim,
+          username,
           password,
         }),
       });
@@ -45,6 +49,12 @@ const Register = () => {
             <label className="text-sm font-semibold">NIM</label>
             <div className="p-1 border border-gray-200 rounded">
               <input onChange={(e) => setNim(e.target.value)} className="outline-none" type="text" placeholder="Masukkan NIM" />
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <label className="text-sm font-semibold">Username</label>
+            <div className="p-1 border border-gray-200 rounded">
+              <input onChange={(e) => setUsername(e.target.value)} className="outline-none" type="text" placeholder="Masukkan Username" />
             </div>
           </div>
           <div className="flex flex-col">

@@ -1,6 +1,21 @@
+"use client"
+import { checkAuth } from '@/utils/CheckAuth';
 import Image from 'next/image'
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function Home() {
+  const router = useRouter()
+  useEffect(() => {
+    // Cek apakah pengguna telah login
+    if (!checkAuth()) {
+      // Jika tidak, redirect ke halaman login
+      router.push('/login');
+    }else {
+      router.push('/')
+    }
+  }, []);
+
   return (
     <div className="py-3 px-5">
       <div className="flex justify-between">
