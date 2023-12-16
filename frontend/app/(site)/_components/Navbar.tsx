@@ -6,10 +6,10 @@ const Navbar = () => {
       <p>ADMIN</p>
       <div className="flex flex-col">
         <Link href={'/'}>
-          LIST
+          Absensi
         </Link>
         <Link href={'/list-mahasiswa'}>
-          LIST
+          List Mahasiswa
         </Link>
       </div>
     </div>

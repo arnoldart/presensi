@@ -7,7 +7,7 @@ const Login = () => {
         <p className="text-xl font-bold">Login</p>
         <form action="" className="flex flex-col gap-y-3 mt-4">
           <div className="flex flex-col">
-            <label className="text-sm font-semibold">Username</label>
+            <label className="text-sm font-semibold">NIM</label>
             <div className="p-1 border border-gray-200 rounded">
               <input className="outline-none" type="text" placeholder="Masukkan Username" />
             </div>
