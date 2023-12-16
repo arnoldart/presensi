@@ -11,19 +11,16 @@ def add_user():
     data = request.json  # Mengambil data JSON dari body permintaan
     
     # Memeriksa keberadaan username dan password dalam data JSON
-    if 'username' not in data or not data['username'] or \
-       'password' not in data or not data['password'] or \
-       'email' not in data or not data['email']:
-        return jsonify({'error': 'Username, password, and email cannot be empty'}), 400
+    if 'nim' not in data or not data['nim'] or \
+       'password' not in data or not data['password']:
+        return jsonify({'error': 'Username, and password cannot be empty'}), 400
     
-    username = data['username']
+    nim = data['nim']
     password = data['password']
-    email = data['email']
-    role = 'user'
     
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
     
-    new_user = User(username=username, password=hashed_password, email=email, role=role)
+    new_user = User(nim=username, password=hashed_password)
     db.session.add(new_user)
 
     try:
