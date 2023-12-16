@@ -11,18 +11,17 @@ const Login = () => {
   const router = useRouter()
 
   useEffect(() => {
-    // Cek apakah pengguna telah login
     if (!checkAuth()) {
-      // Jika tidak, redirect ke halaman login
       router.push('/login');
-    }else {
-      router.push('/')
     }
-  }, []);
+    if(Cookies.get('id_presensi_kelas')) {
+      router.push(`/dashboard/${Cookies.get('id_presensi_kelas')}`)
+    }
+  }, [])
 
   const handlerLogin = async () => {
     try {
-      const response = await fetch(`https://congenial-winner-q4479vw4jv9hqx-5000.app.github.dev/login`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -41,7 +40,7 @@ const Login = () => {
         Cookies.set('token', token, { expires: 1, path: '/' });
         Cookies.set('id', id, { expires: 1, path: '/' });
 
-        router.push('/')
+        router.push('/new-presensi')
 
       } else {
         // Registrasi gagal, Anda dapat menangani kesalahan di sini

@@ -24,3 +24,9 @@ class Presensi(db.Model):
     kelas = db.Column(db.String(60), nullable=False)
     tanggal = db.Column(db.String(60), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    presensi = db.relationship('MahasiswaPresensi', backref='mahasiswa_presensi', lazy=True)
+
+class MahasiswaPresensi(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nim_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    presensi_id = db.Column(db.Integer, db.ForeignKey('presensi.id'), nullable=False)

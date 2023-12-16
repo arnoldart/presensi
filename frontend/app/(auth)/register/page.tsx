@@ -10,11 +10,9 @@ const Register = () => {
 
   const router = useRouter()
 
-  console.log(process.env.API)
-
   const handlerRegister = async () => {
     try {
-      const response = await fetch(`https://congenial-winner-q4479vw4jv9hqx-5000.app.github.dev//add_user`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/add_user`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

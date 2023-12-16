@@ -10,7 +10,7 @@ export default function ListMahasiswa() {
 
   const fetchData = async (searchUsername: string) => {
     try {
-      const response = await fetch(`https://congenial-winner-q4479vw4jv9hqx-5000.app.github.dev/get_users?nim=${searchUsername || ''}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get_users?nim=${searchUsername || ''}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -26,20 +26,6 @@ export default function ListMahasiswa() {
       }
     } catch (error) {
       console.error('Error fetching user data:', error);
-    }
-  };
-
-  const deleteUser = async (userId:number) => {
-    try {
-      await fetch(`https://congenial-winner-q4479vw4jv9hqx-5000.app.github.dev/delete_user/${userId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      fetchData(username);
-    } catch (error) {
-      console.error('Error deleting user:', error);
     }
   };
 
@@ -64,7 +50,7 @@ export default function ListMahasiswa() {
   }, [username]);
 
   return (
-    <div className="py-3 px-5">
+    <div className="py-5 px-5">
       <div className="flex justify-between">
         <h1>List Mahasiswa</h1>
         <form onChange={handleSearch}>
@@ -94,30 +80,6 @@ export default function ListMahasiswa() {
               <div>test</div>
             )
           }
-          {/* <tbody> */}
-          {/* {userData ? (
-            userData?.map((user:any) => (
-              <tr key={user.id}>
-                <td className="border border-black p-2">{user.username}</td>
-                <td className="border border-black p-2">{user.email}</td>
-                <td className="border border-black p-2">{user.role}</td>
-                <td className="border border-black p-2">
-                  <div className="justify-center flex">
-                    <div onClick={() => deleteUser(user.id)} className="bg-red-500 text-white rounded cursor-pointer text-center inline-block px-3 py-1">
-                      <p>Delete</p>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td className="border border-black p-2">
-                No user data available.
-              </td>
-            </tr>
-          )} */}
-        {/* </tbody> */}
         </table>
     </div>
   )

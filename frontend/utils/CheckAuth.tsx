@@ -7,6 +7,6 @@ export const checkAuth = () => {
 };
 
 export const removeToken = () => {
-  Cookies.remove('token');
+  Cookies.remove('id_presensi_kelas');
   Cookies.remove('id');
 };
