@@ -1,7 +1,9 @@
 "use client";
+import { checkAuth } from "@/utils/CheckAuth";
 import Link from "next/link"
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Cookies from 'js-cookie'
 
 const Register = () => {
   const [nim, setNim] = useState('');
@@ -9,6 +11,15 @@ const Register = () => {
   const [password, setPassword] = useState('');
 
   const router = useRouter()
+  
+  useEffect(() => {
+    if (!checkAuth()) {
+      router.push('/login');
+    }
+    if(Cookies.get('id_presensi_kelas')) {
+      router.push(`/dashboard/${Cookies.get('id_presensi_kelas')}`)
+    }
+  }, [])
 
   const handlerRegister = async () => {
     try {
