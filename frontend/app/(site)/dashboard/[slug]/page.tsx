@@ -58,7 +58,6 @@ export default function Home() {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          // Add any additional headers or authentication tokens if needed
         },
       });
   
@@ -145,30 +144,6 @@ export default function Home() {
               )
             }
           </tbody>
-          {/* <tbody> */}
-          {/* {userData ? (
-            userData?.map((user:any) => (
-              <tr key={user.id}>
-                <td className="border border-black p-2">{user.username}</td>
-                <td className="border border-black p-2">{user.email}</td>
-                <td className="border border-black p-2">{user.role}</td>
-                <td className="border border-black p-2">
-                  <div className="justify-center flex">
-                    <div onClick={() => deleteUser(user.id)} className="bg-red-500 text-white rounded cursor-pointer text-center inline-block px-3 py-1">
-                      <p>Delete</p>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td className="border border-black p-2">
-                No user data available.
-              </td>
-            </tr>
-          )} */}
-        {/* </tbody> */}
         </table>
     </div>
   )

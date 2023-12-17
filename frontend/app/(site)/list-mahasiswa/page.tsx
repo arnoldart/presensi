@@ -1,6 +1,5 @@
 "use client"
 import { checkAuth } from '@/utils/CheckAuth';
-import Image from 'next/image'
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -14,7 +13,6 @@ export default function ListMahasiswa() {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          // Add any additional headers or authentication tokens if needed
         },
       });
 
@@ -41,9 +39,7 @@ export default function ListMahasiswa() {
   const router = useRouter()
 
   useEffect(() => {
-    // Check if the user is authenticated
     if (!checkAuth()) {
-      // If not authenticated, redirect to the login page
       router.push('/login');
     }
     fetchData(username);
@@ -52,35 +48,34 @@ export default function ListMahasiswa() {
   return (
     <div className="py-5 px-5">
       <div className="flex justify-between">
-        <h1>List Mahasiswa</h1>
+        <h1 className='font-bold'>List Mahasiswa</h1>
         <form onChange={handleSearch}>
           <input value={username} onChange={handleInputChange} type="text" className="text-black outline-none border-2 border-black" placeholder="Search..." />
         </form>
       </div>
-      {/* <div className="container mx-auto"> */}
-        <table className="w-full border border-black mt-3">
-          <thead className="border border-black">
-            <tr>
-            <th className="border border-black p-2">Nama</th>
-              <th className="border border-black p-2">NIM</th>
-            </tr>
-          </thead>
-          <tbody>
-            
-          </tbody>
-          {userData ? 
-            (
-              userData?.map((user):any => (
-                <tr key={user.id}>
-                  <td className="border border-black p-2">{user.name}</td>
-                  <td className="border border-black p-2">{user.nim}</td>
-                </tr>
-              ))
-            ) : (
-              <div>test</div>
-            )
-          }
-        </table>
+      <table className="w-full border border-black mt-3">
+        <thead className="border border-black">
+          <tr>
+          <th className="border border-black p-2">Nama</th>
+            <th className="border border-black p-2">NIM</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        </tbody>
+        {userData ? 
+          (
+            userData?.map((user:any) => (
+              <tr key={user.id}>
+                <td className="border border-black p-2">{user.name}</td>
+                <td className="border border-black p-2">{user.nim}</td>
+              </tr>
+            ))
+          ) : (
+            <div>test</div>
+          )
+        }
+      </table>
     </div>
   )
 }
