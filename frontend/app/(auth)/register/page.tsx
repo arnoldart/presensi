@@ -14,10 +14,9 @@ const Register = () => {
   
   useEffect(() => {
     if (!checkAuth()) {
-      router.push('/login');
-    }
-    if(Cookies.get('id_presensi_kelas')) {
-      router.push(`/dashboard/${Cookies.get('id_presensi_kelas')}`)
+      // router.push('/login');
+    }else {
+      console.log('sudah login')
     }
   }, [])
 

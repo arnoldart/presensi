@@ -7,13 +7,13 @@ import Cookies from 'js-cookie'
 const Transition = () => {
   const router = useRouter()
   useEffect(() => {
-    if(checkAuth()) {
+    if(!checkAuth()) {
       router.push('/login')
     }
     if(Cookies.get('id_presensi_kelas')) {
       router.push(`/dashboard/${Cookies.get('id_presensi_kelas')}`)
     }
-  })
+  }, [])
   return (
     <div></div>
   )
